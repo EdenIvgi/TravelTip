@@ -69,8 +69,11 @@ function renderLocs(locs) {
 }
 ///commit///
 function onRemoveLoc(locId) {
+<<<<<<< Updated upstream
     const isConfirmed = confirm('Are you sure you want to remove this location?')
     if (!isConfirmed) return
+=======
+>>>>>>> Stashed changes
 
     locService.remove(locId)
         .then(() => {
@@ -89,7 +92,10 @@ function onSearchAddress(ev) {
     const el = document.querySelector('[name=address]')
     mapService.lookupAddressGeo(el.value)
         .then(geo => {
+            console.log('relevenat', geo);
+            // need to make sure that geo is geo object and not error
             mapService.panTo(geo)
+
         })
         .catch(err => {
             console.error('OOPs:', err)
