@@ -32,7 +32,7 @@ export const locService = {
     setSortBy,
     getLocCountByRateMap
 }
-
+//3// add filtering
 function query() {
     return storageService.query(DB_KEY)
         .then(locs => {
