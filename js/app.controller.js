@@ -69,11 +69,8 @@ function renderLocs(locs) {
 }
 ///commit///
 function onRemoveLoc(locId) {
-<<<<<<< Updated upstream
     const isConfirmed = confirm('Are you sure you want to remove this location?')
     if (!isConfirmed) return
-=======
->>>>>>> Stashed changes
 
     locService.remove(locId)
         .then(() => {
@@ -271,7 +268,12 @@ function onSetFilterBy({ txt, minRate }) {
 function renderLocStats() {
     locService.getLocCountByRateMap().then(stats => {
         handleStats(stats, 'loc-stats-rate')
+
     })
+    locService.getLocCountByUpdateMap().then(stats => {
+        handleStats(stats, 'loc-stats-updated')
+    })
+
 }
 
 function handleStats(stats, selector) {

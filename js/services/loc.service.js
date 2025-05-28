@@ -30,7 +30,8 @@ export const locService = {
     save,
     setFilterBy,
     setSortBy,
-    getLocCountByRateMap
+    getLocCountByRateMap,
+    getLocCountByUpdateMap,
 }
 function query() {
     return storageService.query(DB_KEY)
@@ -53,6 +54,10 @@ function query() {
 
             if (gSortBy.rate !== undefined) {
                 locs.sort((p1, p2) => (p1.rate - p2.rate) * gSortBy.rate)
+            } else if (gSortBy.name !== undefined) {
+                locs.sort((p1, p2) => p1.name.localeCompare(p2.name) * gSortBy.name)
+            } else if (gSortBy.createdAt !== undefined) {
+                locs.sort((p1, p2) => (p1.createdAt - p2.createdAt) * gSortBy.createdAt)
             }
 
             return locs
@@ -96,6 +101,26 @@ function getLocCountByRateMap() {
             return locCountByRateMap
         })
 }
+//5 
+function getLocCountByUpdateMap() {
+    return storageService.query(DB_KEY)
+        .then(locs => {
+            const today = new Date() //returns today's current date and time object
+            const locCountUpdateMap = locs.reduce((map, loc) => {
+                const dateOfUpdate = new Date(loc.updatedAt) //return date object with creation date
+                //compare only date without time details
+                if (dateOfUpdate.getFullYear() === today.getFullYear() &&
+                    dateOfUpdate.getMonth() === today.getMonth() &&
+                    dateOfUpdate.getDate() === today.getDate()) map.today++
+                else if (loc.updatedAt > loc.createdAt) map.past++
+                else if (loc.createdAt === loc.updatedAt) map.never++
+                return map
+            }, { today: 0, past: 0, never: 0 })
+            locCountUpdateMap.total = locs.length
+            return locCountUpdateMap
+        })
+}
+
 
 function setSortBy(sortBy = {}) {
     gSortBy = sortBy
