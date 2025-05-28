@@ -100,7 +100,7 @@ function onSearchAddress(ev) {
             console.log('relevenat', geo);
             // need to make sure that geo is geo object and not error
             mapService.panTo(geo)
-
+            mapService.setMarker({ geo, name: 'Searched Place' })
         })
         .catch(err => {
             console.error('OOPs:', err)
