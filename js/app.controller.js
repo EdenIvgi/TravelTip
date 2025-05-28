@@ -18,6 +18,8 @@ window.app = {
     onSetFilterBy,
 }
 
+let gUserPos = null
+
 function onInit() {
     getFilterByFromQueryParams()
     loadAndRenderLocs()
@@ -37,6 +39,10 @@ function renderLocs(locs) {
 
     var strHTML = locs.map(loc => {
         const className = (loc.id === selectedLocId) ? 'active' : ''
+        const distStr = (gUserPos)
+            ? ` | Distance: ${utilService.getDistance(gUserPos, loc.geo, 'K')} km`
+            : ''
+
         return `
         <li class="loc ${className}" data-id="${loc.id}">
             <h4>  
@@ -45,16 +51,16 @@ function renderLocs(locs) {
             </h4>
             <p class="muted">
                 Created: ${utilService.elapsedTime(loc.createdAt)}
-                ${(loc.createdAt !== loc.updatedAt) ?
-                ` | Updated: ${utilService.elapsedTime(loc.updatedAt)}`
-                : ''}
+                ${(loc.createdAt !== loc.updatedAt) ? ` | Updated: ${utilService.elapsedTime(loc.updatedAt)}` : ''}
+                ${distStr}
             </p>
             <div class="loc-btns">     
                <button title="Delete" onclick="app.onRemoveLoc('${loc.id}')">🗑️</button>
                <button title="Edit" onclick="app.onUpdateLoc('${loc.id}')">✏️</button>
                <button title="Select" onclick="app.onSelectLoc('${loc.id}')">🗺️</button>
             </div>     
-        </li>`}).join('')
+        </li>`
+    }).join('')
 
     const elLocList = document.querySelector('.loc-list')
     elLocList.innerHTML = strHTML || 'No locs to show'
@@ -65,9 +71,11 @@ function renderLocs(locs) {
         const selectedLoc = locs.find(loc => loc.id === selectedLocId)
         displayLoc(selectedLoc)
     }
+
     document.querySelector('.debug').innerText = JSON.stringify(locs, null, 2)
 }
-///commit///
+
+
 function onRemoveLoc(locId) {
     const isConfirmed = confirm('Are you sure you want to remove this location?')
     if (!isConfirmed) return
@@ -133,6 +141,7 @@ function loadAndRenderLocs() {
 function onPanToUserPos() {
     mapService.getUserPosition()
         .then(latLng => {
+            gUserPos = latLng
             mapService.panTo({ ...latLng, zoom: 15 })
             unDisplayLoc()
             loadAndRenderLocs()
@@ -174,6 +183,7 @@ function onSelectLoc(locId) {
 }
 
 function displayLoc(loc) {
+
     document.querySelector('.loc.active')?.classList?.remove('active')
     document.querySelector(`.loc[data-id="${loc.id}"]`).classList.add('active')
 
@@ -188,6 +198,11 @@ function displayLoc(loc) {
     el.classList.add('show')
 
     utilService.updateQueryParams({ locId: loc.id })
+
+    if (gUserPos) {
+        const dist = utilService.getDistance(gUserPos, loc.geo, 'K')
+        el.querySelector('.loc-address').innerText += ` - (${dist} km away) `
+    }
 }
 
 function unDisplayLoc() {
