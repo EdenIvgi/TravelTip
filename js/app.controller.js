@@ -17,7 +17,7 @@ window.app = {
     onShareLoc,
     onSetSortBy,
     onSetFilterBy,
-    onUpdateModal,
+    onSaveLoc,
     onCloseModal,
 }
 
@@ -78,7 +78,6 @@ function renderLocs(locs) {
     document.querySelector('.debug').innerText = JSON.stringify(locs, null, 2)
 }
 
-
 function onRemoveLoc(locId) {
     const isConfirmed = confirm('Are you sure you want to remove this location?')
     if (!isConfirmed) return
@@ -112,6 +111,7 @@ function onSearchAddress(ev) {
 }
 //6
 function onAddLoc(geo) {
+    //no id is being set here, loc hasn't been saved yet
     const elModal = document.querySelector('.edit-loc-modal')
     elModal.dataset.geo = JSON.stringify(geo) //turns obj to str
     elModal.querySelector('.modal-title').innerText = 'Add Location'
@@ -133,7 +133,7 @@ function onUpdateLoc(locId) {
     })
 }
 
-function onUpdateModal(ev, elForm) {//called by submit btn
+function onSaveLoc(ev, elForm) {//called by submit/save btn
     ev.preventDefault()
 
     const rate = +elForm.querySelector('[name="loc-rate-update"]').value
@@ -143,39 +143,22 @@ function onUpdateModal(ev, elForm) {//called by submit btn
     }
     const name = elForm.querySelector('[name="loc-name-update"]').value
     const elModal = document.querySelector('.edit-loc-modal')
-    const id = elModal.querySelector('[name="id"]').value
 
-    const locId = elModal.dataset.locId
-    const geoData = elModal.dataset.geo //geo as str state
+    //build the location object
+    const loc = {
+        id: elModal.dataset.locId, //set only during editing
+        name,
+        rate,
+    }
+    //if it's a new location there's no id, so add geo to obj
+    if (!loc.id) loc.geo = JSON.parse(elModal.dataset.geo), //parse turns str back to obj
 
-    if (locId) {
-        locService.getById(locId)
-            .then(loc => {
-                if (rate && rate !== loc.rate) {
-                    loc.rate = rate
-                    locService.save(loc)
-                        .then(savedLoc => {
-                            elModal.close()
-                            flashMsg(`Rate was set to: ${savedLoc.rate}`)
-                            loadAndRenderLocs()
-                        })
-                        .catch(err => {
-                            console.error('OOPs:', err)
-                            flashMsg('Cannot update location')
-                        })
-                }
-            })
-    } else if (geoData) {
-        const loc = {
-            id,
-            name,
-            rate,
-        }
-        loc.geo = JSON.parse(elModal.dataset.geo)  ///turn geo back to obj and save
         locService.save(loc)
+
             .then((savedLoc) => {
+                console.log('loc:', loc)
                 elModal.close()
-                flashMsg(`Added Location (id: ${savedLoc.id})`)
+                flashMsg(`Location saved`)
                 utilService.updateQueryParams({ locId: savedLoc.id })
                 loadAndRenderLocs()
             })
@@ -183,7 +166,6 @@ function onUpdateModal(ev, elForm) {//called by submit btn
                 console.error('OOPs:', err)
                 flashMsg('Cannot add location')
             })
-    }
 }
 
 function loadAndRenderLocs() {
@@ -209,7 +191,6 @@ function onPanToUserPos() {
             flashMsg('Cannot get your position')
         })
 }
-
 
 function onCloseModal() {
     const elModal = document.querySelector('.edit-loc-modal')

@@ -59,8 +59,7 @@
 
                 <dialog class="edit-loc-modal">
                     <h3 class="modal-title">Edit Location</h3>
-                    <form method="dialog" onsubmit="app.onUpdateModal(event, this)">
-                        <input name="id" type="hidden">
+                    <form method="dialog" onsubmit="app.onSaveLoc(event, this)">
                         <input name="loc-name-update" type="text" />
                         <input name="loc-rate-update" type="number" placeholder="Rate (1-5)" />
                         <button class="submit-btn">Save</button>
