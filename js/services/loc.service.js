@@ -121,7 +121,6 @@ function getLocCountByUpdateMap() {
         })
 }
 
-
 function setSortBy(sortBy = {}) {
     gSortBy = sortBy
 }

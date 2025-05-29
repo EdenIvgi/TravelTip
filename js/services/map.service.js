@@ -30,9 +30,6 @@ function panTo({ lat, lng, zoom = 15 }) {
 }
 
 function lookupAddressGeo(geoOrAddress) {
-
-    console.log(geoOrAddress);
-
     // Sample URLs:
     // const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}`
     // const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452`
@@ -56,7 +53,7 @@ function lookupAddressGeo(geoOrAddress) {
                 lng: geometry.location.lng,
                 zoom: gMap.getZoom()
             }
-            // console.log('GEO IS', geo)
+            console.log('GEO IS', geo)
             return geo
         })
 

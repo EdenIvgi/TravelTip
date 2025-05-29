@@ -56,6 +56,19 @@
                     </p>
                 </section>
                 <h3>Locations</h3>
+
+                <dialog class="edit-loc-modal">
+                    <h3 class="modal-title">Edit Location</h3>
+                    <form method="dialog" onsubmit="app.onUpdateModal(event, this)">
+                        <input name="id" type="hidden">
+                        <input name="loc-name-update" type="text" />
+                        <input name="loc-rate-update" type="number" placeholder="Rate (1-5)" />
+                        <button class="submit-btn">Save</button>
+                        <button type="button" class="close-btn" onclick="app.onCloseModal()">
+                            x
+                        </button>
+                    </form>
+                </dialog>
                 <ul class="loc-list"></ul>
                 <section class="loc-stats">
                     <h3>Statistics</h3>

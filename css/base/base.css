@@ -14,7 +14,8 @@ header h1 {
     margin: 0;
 }
 
-input[type=text],input[type=number] {
+input[type=text],
+input[type=number] {
     line-height: 2em;
     background-color: var(--color1);
     border: 0;
@@ -45,3 +46,6 @@ button:hover {
     font-size: .8em;
 }
 
+.hidden {
+    display: none;
+}
