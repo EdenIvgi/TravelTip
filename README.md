@@ -1,3 +1,4 @@
+
 # TravelTip
 #### The app that gets you somewhere
 
@@ -6,24 +7,30 @@
 TravelTip is an app that keeps a list of favorite locations
 
 ## Main Features
-- The app allows the user to keep and manage locations
-- The user can also search for an address and pan the map to that point
-- The User can pan the map to his own geo-location
+- Manage a personalized list of favorite locations (add, edit, delete, and view details)
+- Search for addresses and pan the map to any location
+- Instantly pan the map to your current geo-location
+- Filter, sort, and group locations in the list
+- Select a location to highlight it on the map and in the list
+- Copy the selected location’s URL to the clipboard
+- Share a location using the Web Share API 
+- Location state is reflected in the URL query parameters for easy sharing
 
-## Locations CRUDL 
-- Create – click on the map prompts for name and rate
-- Read – Selected location details (see below) 
-- Update – can update location rate
-- Delete – can delete a location
-- List - Including filtering, sorting and grouping
+## Locations CRUDL
+- **Create** – Click on the map to add a new location; prompts a modal for name and rating.
+- **Read** – View details of the selected location, including name, address, rating.
+- **Update** – Edit the rating of an existing location.
+- **Delete** – Remove a location from your favorites list.
+- **List** – View all locations with options to filter, sort, and group by rating or other criteria.
 
 ## Selected Location
-- Displayed in the header
-- Location is active in the list (gold color)
-- Marker on the map
-- Reflected in query params 
-- Copy url to clipboard
-- Share via Web-Share API
+- Displayed in the header with name and address
+- Highlighted as active in the list (gold color)
+- Marker shown on the map
+- Reflected in the URL query parameters
+- Copy location URL to clipboard
+- Share location via Web Share API 
+- Location details modal shows name, address and rating
 
 ## Location
 Here is the format of the location object:
@@ -44,6 +51,7 @@ Here is the format of the location object:
   ```
 ## Services
 ```js
+
 export const locService = {
     query,
     getById,
@@ -51,7 +59,8 @@ export const locService = {
     save,
     setFilterBy,
     setSortBy,
-    getLocCountByRateMap
+    getLocCountByRateMap,
+    getLocCountByUpdateMap,
 }
 
 export const mapService = {
@@ -71,6 +80,7 @@ export const mapService = {
 
 window.app = {
     onRemoveLoc,
+    onAddLoc,
     onUpdateLoc,
     onSelectLoc,
     onPanToUserPos,
@@ -78,7 +88,9 @@ window.app = {
     onCopyLoc,
     onShareLoc,
     onSetSortBy,
-    onSetFilterBy
+    onSetFilterBy,
+    onSaveLoc,
+    onCloseModal,
 }
 ```
 
