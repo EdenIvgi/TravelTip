@@ -109,7 +109,7 @@ function onSearchAddress(ev) {
             flashMsg('Cannot lookup address')
         })
 }
-//6
+
 function onAddLoc(geo) {
     //no id is being set here, loc hasn't been saved yet
     const elModal = document.querySelector('.edit-loc-modal')
@@ -117,6 +117,7 @@ function onAddLoc(geo) {
     elModal.querySelector('.modal-title').innerText = 'Add Location'
     const elName = elModal.querySelector('[name="loc-name-update"]')
     elName.value = geo.address || 'Just a place'
+    elModal.removeAttribute('data-loc-id') //remove id if add after edit
     elModal.showModal()
 }
 
@@ -124,20 +125,21 @@ function onUpdateLoc(locId) {
     const elModal = document.querySelector('.edit-loc-modal')
     elModal.querySelector('.modal-title').innerText = 'Edit Location'
     elModal.dataset.locId = locId
-    locService.getById(locId).then(loc => {
-        const elRate = elModal.querySelector('[name="loc-rate-update"]')
-        elRate.value = loc.rate || ''
-        const elName = elModal.querySelector('[name="loc-name-update"]')
-        elName.value = loc.name || ''
-        elModal.showModal()
-    })
+    locService.getById(locId)
+        .then(loc => {
+            const elRate = elModal.querySelector('[name="loc-rate-update"]')
+            elRate.value = loc.rate || ''
+            const elName = elModal.querySelector('[name="loc-name-update"]')
+            elName.value = loc.name || ''
+            elModal.showModal()
+        })
 }
 
 function onSaveLoc(ev, elForm) {//called by submit/save btn
     ev.preventDefault()
 
     const rate = +elForm.querySelector('[name="loc-rate-update"]').value
-    if (!rate || rate < 0 || rate > 5) {
+    if (isNaN(rate) || rate < 0 || rate > 5) {
         alert('Please enter a valid number')
         return
     }
@@ -151,21 +153,20 @@ function onSaveLoc(ev, elForm) {//called by submit/save btn
         rate,
     }
     //if it's a new location there's no id, so add geo to obj
-    if (!loc.id) loc.geo = JSON.parse(elModal.dataset.geo), //parse turns str back to obj
+    if (!loc.id) loc.geo = JSON.parse(elModal.dataset.geo)
 
-        locService.save(loc)
-
-            .then((savedLoc) => {
-                console.log('loc:', loc)
-                elModal.close()
-                flashMsg(`Location saved`)
-                utilService.updateQueryParams({ locId: savedLoc.id })
-                loadAndRenderLocs()
-            })
-            .catch(err => {
-                console.error('OOPs:', err)
-                flashMsg('Cannot add location')
-            })
+    locService.save(loc)
+        .then((savedLoc) => {
+            console.log('loc:', loc)
+            elModal.close()
+            flashMsg(`Location saved`)
+            utilService.updateQueryParams({ locId: savedLoc.id })
+            loadAndRenderLocs()
+        })
+        .catch(err => {
+            console.error('OOPs:', err)
+            flashMsg('Cannot save location')
+        })
 }
 
 function loadAndRenderLocs() {
