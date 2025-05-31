@@ -78,6 +78,25 @@
             </div>
         </div>
     </main>
+
+    <dialog class="edit-loc-modal">
+        <form method="dialog" onsubmit="app.onSaveLoc(event, this)">
+            <h3 class="modal-title"></h3>
+            <label>
+                Name:
+                <input name="loc-name-update" required />
+            </label>
+            <label>
+                Rate:
+                <input name="loc-rate-update" type="number" min="0" max="5" required />
+            </label>
+            <menu>
+                <button type="submit">Save</button>
+                <button type="button" onclick="app.onCloseModal()">Cancel</button>
+            </menu>
+        </form>
+    </dialog>
+
     <pre class="debug" hidden></pre>
     <div class="user-msg"></div>
     <script type="module" src="js/app.controller.js"></script>
