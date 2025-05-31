@@ -21,7 +21,8 @@ font-weight: lighter;
 width: 100%;
 }
 
-input[type=text],input[type=number] {
+input[type=text],
+input[type=number] {
     line-height: 2em;
     border: 0;
    background-color: rgba(255, 255, 255, 0.328); 
@@ -71,3 +72,28 @@ input{
 }
 
 
+
+.main-content {
+    display: flex;
+    justify-content: center;
+    gap: 15rem; 
+    width: 100%;
+}
+
+
+input{
+    border-radius: 5px;
+}
+
+.selected-loc{
+   width: 95%;
+    justify-self: center;
+    font-weight: lighter;
+   margin-bottom: 20px;
+
+}
+
+
+.hidden {
+    display: none;
+}
