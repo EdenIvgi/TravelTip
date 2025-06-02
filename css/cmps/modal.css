@@ -1,5 +1,30 @@
-.edit-loc-modal .close-btn {
-    position: absolute;
+.edit-loc-modal {
+    /* position: absolute;
     top: 8px;
-    right: 8px;
+    right: 8px; */
+    border-radius: 5px;
+    border: 2px solid rgb(128, 126, 126);
+    background-color: #d0dbe9;
+    ;
+}
+
+.modal-title {
+    color:
+}
+
+.save-btn,
+.cancel-btn {
+    border: 1px solid rgb(196, 196, 196)
+}
+
+input[name="loc-name-update"],
+input[name="loc-rate-update"] {
+    line-height: 1.7em;
+    outline: none;
+    border: 1px solid rgb(196, 196, 196)
+}
+
+input[name="loc-rate-update"]:focus,
+input[name="loc-name-update"]:focus {
+    border-color: #65a5ee;
 }
