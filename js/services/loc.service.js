@@ -101,7 +101,7 @@ function getLocCountByRateMap() {
             return locCountByRateMap
         })
 }
-//5 
+
 function getLocCountByUpdateMap() {
     return storageService.query(DB_KEY)
         .then(locs => {
