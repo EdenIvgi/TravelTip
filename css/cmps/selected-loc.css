@@ -5,6 +5,8 @@
     overflow: hidden;
     transition: .5s;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 10px;
+    max-width: 165vh;
 }
 
 .selected-loc.show {
@@ -17,7 +19,5 @@
     opacity: 0;
 }
 
-.loc-rate {
-    color: var(--color4);
-}
+
 

@@ -8,7 +8,7 @@
     align-self: flex-start;
 }
 .loc-list-container {
-    max-height: 28em; 
+    max-height: 34em; 
     overflow-y: auto;
     background: #ffffff72;
     border-radius: 8px;
@@ -49,6 +49,7 @@
     border: 1px solid #ccc;
     box-shadow: 0 6px 30px rgba(0, 0, 0, 0.3);
     margin-bottom: 2rem;
+    margin-top: 10px;
 }
 
 .form-search {
@@ -57,16 +58,16 @@
 }
 
 .btn-user-pos {
-    background-color: var(--bg2);
     background-image: url(../../img/user-loc.png);
     background-size: cover;
     width: 2em;
     height: 2em;
-}
-.btn-user-pos:hover {
-    background-color: whitesmoke;
+    background-color: rgba(255, 255, 255, 0);
 }
 
+.btn-user-pos:hover{
+    background-color: rgba(255, 255, 255, 0);
+}
 .loc-filter {
     padding: 0.3em;
     border-radius: 10px;
@@ -102,9 +103,10 @@
     display: flex;
    justify-self: center;
    gap: 100px;
-   
-}
-.stats-container > div {
-    flex: 1 1 0;
-    min-width: 180px;
+   background: #ffffff3f;
+   border-radius: 8px;
+   padding-inline:70px ;
+   justify-content: center;   
+   align-items: center; 
+width: 80%;
 }

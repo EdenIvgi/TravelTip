@@ -28,7 +28,6 @@ function onInit() {
     loadAndRenderLocs()
     mapService.initMap()
         .then(() => {
-            // onPanToTokyo()
             mapService.addClickListener(onAddLoc)
         })
         .catch(err => {
@@ -99,8 +98,7 @@ function onSearchAddress(ev) {
     const el = document.querySelector('[name=address]')
     mapService.lookupAddressGeo(el.value)
         .then(geo => {
-            console.log('relevenat', geo);
-            // need to make sure that geo is geo object and not error
+            console.log('relevenat', geo)
             mapService.panTo(geo)
             mapService.setMarker({ geo, name: 'Searched Place' })
         })
@@ -111,9 +109,8 @@ function onSearchAddress(ev) {
 }
 //6
 function onAddLoc(geo) {
-    //no id is being set here, loc hasn't been saved yet
     const elModal = document.querySelector('.edit-loc-modal')
-    elModal.dataset.geo = JSON.stringify(geo) //turns obj to str
+    elModal.dataset.geo = JSON.stringify(geo)
     elModal.querySelector('.modal-title').innerText = 'Add Location'
     const elName = elModal.querySelector('[name="loc-name-update"]')
     elName.value = geo.address || 'Just a place'
@@ -133,7 +130,7 @@ function onUpdateLoc(locId) {
     })
 }
 
-function onSaveLoc(ev, elForm) {//called by submit/save btn
+function onSaveLoc(ev, elForm) {
     ev.preventDefault()
 
     const rate = +elForm.querySelector('[name="loc-rate-update"]').value
@@ -144,28 +141,26 @@ function onSaveLoc(ev, elForm) {//called by submit/save btn
     const name = elForm.querySelector('[name="loc-name-update"]').value
     const elModal = document.querySelector('.edit-loc-modal')
 
-    //build the location object
     const loc = {
-        id: elModal.dataset.locId, //set only during editing
+        id: elModal.dataset.locId,
         name,
         rate,
     }
-    //if it's a new location there's no id, so add geo to obj
-    if (!loc.id) loc.geo = JSON.parse(elModal.dataset.geo), //parse turns str back to obj
+    if (!loc.id) loc.geo = JSON.parse(elModal.dataset.geo)
 
-        locService.save(loc)
+    locService.save(loc)
 
-            .then((savedLoc) => {
-                console.log('loc:', loc)
-                elModal.close()
-                flashMsg(`Location saved`)
-                utilService.updateQueryParams({ locId: savedLoc.id })
-                loadAndRenderLocs()
-            })
-            .catch(err => {
-                console.error('OOPs:', err)
-                flashMsg('Cannot add location')
-            })
+        .then((savedLoc) => {
+            console.log('loc:', loc)
+            elModal.close()
+            flashMsg(`Location saved`)
+            utilService.updateQueryParams({ locId: savedLoc.id })
+            loadAndRenderLocs()
+        })
+        .catch(err => {
+            console.error('OOPs:', err)
+            flashMsg('Cannot add location')
+        })
 }
 
 function loadAndRenderLocs() {

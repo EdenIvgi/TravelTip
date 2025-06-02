@@ -71,8 +71,6 @@ input{
 
 }
 
-
-
 .main-content {
     display: flex;
     justify-content: center;
@@ -97,3 +95,4 @@ input{
 .hidden {
     display: none;
 }
+
